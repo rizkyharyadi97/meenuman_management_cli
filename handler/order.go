@@ -52,7 +52,7 @@ func (h OrderHandler) Buy(in *bufio.Reader) error {
 			return err
 		}
 
-		fmt.Println("\n=== STOK MEENUMAN ===")
+		fmt.Println("\n=== MENU MEENUMAN ===")
 		for _, p := range products {
 			fmt.Printf("%d. %-25s Rp%.0f | Stok: %d\n", p.ID, p.Name, p.Price, p.Stock)
 		}
