@@ -4,10 +4,13 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 
 	"meenuman/entity"
 	"meenuman/repository"
+
+	"golang.org/x/term"
 )
 
 // Register membuat akun baru dan meminta user memilih role.
@@ -26,9 +29,9 @@ func Register(repo repository.UserRepository, in *bufio.Reader) (entity.User, er
 	}
 
 	u := entity.User{
-		Email: email,
+		Email:    email,
 		Password: password,
-		Role: role,
+		Role:     role,
 	}
 
 	if err := repo.Register(u); err != nil {
@@ -46,7 +49,13 @@ func Login(repo repository.UserRepository, in *bufio.Reader) (entity.User, error
 	email := readLine(in)
 
 	fmt.Print("Password: ")
-	password := readLine(in)
+	passwordByte, err := term.ReadPassword(int(os.Stdin.Fd()))
+	if err != nil {
+		return entity.User{}, err
+	}
+
+	password := string(passwordByte)
+	fmt.Println()
 
 	return repo.Login(email, password)
 }

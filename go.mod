@@ -1,10 +1,11 @@
 module meenuman
 
-go 1.22
+go 1.26.0
 
 require (
 	github.com/go-sql-driver/mysql v1.8.1
 	github.com/olekukonko/tablewriter v1.1.4
+	golang.org/x/term v0.46.0
 )
 
 require (
@@ -19,5 +20,5 @@ require (
 	github.com/olekukonko/cat v0.0.0-20250911104152-50322a0618f6 // indirect
 	github.com/olekukonko/errors v1.2.0 // indirect
 	github.com/olekukonko/ll v0.1.6 // indirect
-	golang.org/x/sys v0.30.0 // indirect
+	golang.org/x/sys v0.48.0 // indirect
 )
