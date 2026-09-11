@@ -21,7 +21,7 @@ func (h ProductHandler) List() error {
 		return err
 	}
 
-	fmt.Println("\n=== MENU MEENUMAN ===")
+	fmt.Println("\n=== STOK MEENUMAN ===")
 
 	for _, p := range products {
 		fmt.Printf("%d. %-25s Rp%.0f | Stok: %d\n", p.ID, p.Name, p.Price, p.Stock)
