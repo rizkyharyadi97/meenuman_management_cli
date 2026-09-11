@@ -7,6 +7,7 @@ import (
 
 	"meenuman/entity"
 	"meenuman/repository"
+	"meenuman/table"
 )
 
 // OrderHandler menangani input order, perhitungan, pembayaran, dan riwayat transaksi.
@@ -28,9 +29,7 @@ func (h OrderHandler) Buy(in *bufio.Reader) error {
 	}
 
 	fmt.Println("\n=== PILIH CUSTOMER ===")
-	for _, c := range customers {
-		fmt.Printf("%d. %s | %s | %s\n", c.ID, c.Name, c.Email, c.Phone)
-	}
+	table.PrintCustomers(customers)
 	fmt.Println("0. Kembali")
 	fmt.Print("Pilih customer: ")
 
@@ -53,9 +52,7 @@ func (h OrderHandler) Buy(in *bufio.Reader) error {
 		}
 
 		fmt.Println("\n=== MENU MEENUMAN ===")
-		for _, p := range products {
-			fmt.Printf("%d. %-25s Rp%.0f | Stok: %d\n", p.ID, p.Name, p.Price, p.Stock)
-		}
+		table.PrintProducts(products)
 
 		fmt.Println("0. Selesai memilih")
 		fmt.Println("-1. Kembali")
@@ -134,15 +131,7 @@ func (h OrderHandler) Buy(in *bufio.Reader) error {
 	total := subtotal + tax - discount
 
 	fmt.Println("\n=== DETAIL ORDER ===")
-	for _, detail := range details {
-		fmt.Printf(
-			"%-25s %dx Rp%.0f = Rp%.0f\n",
-			detail.ProductName,
-			detail.Quantity,
-			detail.Price,
-			detail.Subtotal,
-		)
-	}
+	table.PrintOrderDetails(details)
 
 	fmt.Println("----------------------------------------")
 	fmt.Printf("Subtotal : Rp%.0f\n", subtotal)
@@ -165,9 +154,7 @@ func (h OrderHandler) Buy(in *bufio.Reader) error {
 	}
 
 	fmt.Println("\n=== PEMBAYARAN ===")
-	for _, method := range methods {
-		fmt.Printf("%d. %s\n", method.ID, method.Name)
-	}
+	table.PrintPaymentMethods(methods)
 	fmt.Println("0. Kembali")
 	fmt.Print("Pilih pembayaran: ")
 
@@ -219,24 +206,16 @@ func (h OrderHandler) History() error {
 	}
 
 	fmt.Println("\n=== RIWAYAT TRANSAKSI ===")
+	table.PrintTransactions(transactions)
 
 	for _, t := range transactions {
-		fmt.Printf("\nTransaksi #%d | %s | Customer: %s\n", t.ID, t.PaymentName, t.CustomerName)
-		fmt.Printf("Waktu    : %s\n", t.CreatedAt)
-		fmt.Printf("Subtotal : Rp%.0f\n", t.Subtotal)
-		fmt.Printf("PPN      : Rp%.0f\n", t.Tax)
-		fmt.Printf("Diskon   : Rp%.0f\n", t.Discount)
-		fmt.Printf("TOTAL    : Rp%.0f\n", t.Total)
-
+		fmt.Printf("\nDetail transaksi #%d:\n", t.ID)
 		details, err := h.Transactions.GetDetails(t.ID)
 		if err != nil {
 			return err
 		}
 
-		fmt.Println("Detail:")
-		for _, d := range details {
-			fmt.Printf("  - %s x%d = Rp%.0f\n", d.ProductName, d.Quantity, d.Subtotal)
-		}
+		table.PrintOrderDetails(details)
 	}
 
 	return nil
@@ -258,16 +237,7 @@ func (h OrderHandler) DailyReport(in *bufio.Reader) error {
 		return nil
 	}
 
-	var income float64
-
-	for _, t := range transactions {
-		income += t.Total
-		fmt.Printf("Transaksi #%d | %s | %s | Total Rp%.0f\n", t.ID, t.CustomerName, t.PaymentName, t.Total)
-	}
-
-	fmt.Println("----------------------------------------")
-	fmt.Printf("Jumlah transaksi : %d\n", len(transactions))
-	fmt.Printf("Pendapatan hari ini: Rp%.0f\n", income)
+	table.PrintDailyReport(transactions)
 
 	return nil
 }

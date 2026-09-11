@@ -7,6 +7,7 @@ import (
 
 	"meenuman/entity"
 	"meenuman/repository"
+	"meenuman/table"
 )
 
 // ProductHandler menangani menu minuman.
@@ -23,9 +24,7 @@ func (h ProductHandler) List() error {
 
 	fmt.Println("\n=== STOK MEENUMAN ===")
 
-	for _, p := range products {
-		fmt.Printf("%d. %-25s Rp%.0f | Stok: %d\n", p.ID, p.Name, p.Price, p.Stock)
-	}
+	table.PrintProducts(products)
 
 	return nil
 }
@@ -66,9 +65,7 @@ func (h ProductHandler) AddStock(in *bufio.Reader) error {
 		return nil
 	}
 
-	for _, p := range products {
-		fmt.Printf("%d. %-25s Rp%.0f | Stok: %d\n", p.ID, p.Name, p.Price, p.Stock)
-	}
+	table.PrintProducts(products)
 
 	fmt.Println("0. Kembali")
 	fmt.Print("Pilih ID menu: ")
@@ -103,9 +100,7 @@ func (h ProductHandler) DeleteProduct(in *bufio.Reader) error {
 		return err
 	}
 
-	for _, p := range products {
-		fmt.Printf("%d. %-25s Rp%.0f | Stok: %d\n", p.ID, p.Name, p.Price, p.Stock)
-	}
+	table.PrintProducts(products)
 
 	fmt.Println("0. Kembali")
 	fmt.Print("Pilih ID menu yang ingin dihapus: ")

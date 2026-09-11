@@ -6,6 +6,7 @@ import (
 
 	"meenuman/entity"
 	"meenuman/repository"
+	"meenuman/table"
 )
 
 // CustomerHandler menangani penambahan, tampilan, dan penghapusan data customer.
@@ -51,9 +52,7 @@ func (h CustomerHandler) List() error {
 		return nil
 	}
 
-	for _, c := range customers {
-		fmt.Printf("%d. %s | %s | %s\n", c.ID, c.Name, c.Email, c.Phone)
-	}
+	table.PrintCustomers(customers)
 
 	return nil
 }
